@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="abhishek" content="">
+    <link rel="icon" href="image/user.ico">
+
+    <title>Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="style/signin.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    #div{
+        background-color: #F5F5F5;
+        width: 402px;
+        height: 353px;
+        background-clip: inherit;
+        align-content: center;
+        border-style: outset;
+        border-radius: 20px;
+       }
+    </style>
+  </head>
+
+  <body>
+ 
+    <div class="container">
+       <center>
+       <div id="div">
+      <form class="form-signin">
+        <i class="tiny material-icons" font-size:30px>account_circle</i>
+        <h2 id="sign" class="form-signin-heading">Log in</h2>
+          <div id="message" style="color:red; font-weight:bold"></div>
+        <input id="username" type="text" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+        <input id="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button id="login" class="btn btn-lg btn-primary btn-block" type="submit">User Login</button>
+         <hr style="color: #f00; background-color: silver; height: 2px;">        
+      </form>
+
+      </div>
+      </center>
+    </div> <!-- /container -->
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+      <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+    $(document).ready(function(){
+      
+     $("#login").click(function(){
+        var username=$('#username').val();
+        var password=$('#password').val(); 
+        if (username && password) {
+        $.ajax({
+        type: 'POST',
+        url: 'config/login.php',
+        data: ({
+                'username': username,
+                'password': password 
+            }),
+        success: function(response)
+        {
+          var reply=$.parseJSON(response);
+            if(reply["success"]==1){
+                $("#sign").css({"color": "Green"});
+                $('#sign').html("Please wait....");
+                location.assign("login_response.php");
+              }
+            else {        
+                $('#message').html("<h4>Invalid Credentials</h4>");
+                $('#username').focus();
+            }
+        } 
+      });
+     }
+      else if(username!=""){
+        $("#message").html('<p class="error"><span class="glyphicon glyphicon-ban-circle"> </span> Please Enter Password</p>');
+        $('#password').focus();
+      }
+      else if (username=="" && password!="") { 
+        $("#message").html('<p class="error"><span class="glyphicon glyphicon-ban-circle"> </span> Please Enter Username</p>');
+        $('#username').focus();
+      }
+      else {
+        $("#message").html('<p class="error"><span class="glyphicon glyphicon-ban-circle"> </span> Please Enter Username and Password </p>');
+        $('#username').focus();
+      }
+    return false;  
+    });
+  });
+    </script>
+  </body>
+</html>
